@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 public class WelcomeWindow extends Application{
     private Button loginButton;
     private Button exitButton;
+    static String user;
 
     @Override
     public void start(Stage welcomeStage) {
@@ -39,8 +40,8 @@ public class WelcomeWindow extends Application{
         grid.add(hbLoginButton, 1, 1);
         Text sceneTitle = new Text("NAZWA UŻYTKOWNIKA:");
         grid.add(sceneTitle, 0, 0);
-        TextField firstNameField = new TextField();
-        grid.add(firstNameField, 1, 0);
+        TextField userName = new TextField();
+        grid.add(userName, 1, 0);
         exitButton = new Button();
         exitButton.setText("WYJŚCIE");
         HBox hbExitButton = new HBox(10);
@@ -52,20 +53,21 @@ public class WelcomeWindow extends Application{
         welcomeStage.setScene(scene);
         welcomeStage.show();
 
-        /*loginButton.setOnAction(new EventHandler<ActionEvent>() {
+        loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Stage stage = new Stage();
-                Login login = new Login();
+                Client client = new Client();
                 try {
-                    login.start(stage);
+                    user = userName.getText();
+                    client.start(stage);
                     welcomeStage.hide();
                 } catch (Exception ex) {
-                    Logger.getLogger(Bank2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
-        });*/
+        });
 
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
