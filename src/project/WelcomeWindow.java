@@ -101,7 +101,7 @@ public class WelcomeWindow extends Application{
 
     }
 
-    private static List<Integer> connectToServer() throws IOException{
+    public static List<Integer> connectToServer() throws IOException{
         Socket socket = new Socket("127.0.0.1", 9898);
         while (true)
         {

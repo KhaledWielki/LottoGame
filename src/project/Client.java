@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,12 +119,10 @@ public class Client extends Application{
                     helpUserList.add(NUM4);
                     helpUserList.add(NUM5);
                     helpUserList.add(NUM6);
-                    System.out.println(helpUserList);
-                    System.out.println(InsertHelper.isInteger(helpUserList));
+
                     if(InsertHelper.isInteger(helpUserList)) {
                         userList = LottoController.getIntegerArray(NUMBERS);
-                        System.out.println(userList);
-
+                        Collections.sort(userList);
                         Integer[] num = InsertHelper.listToTable(userList);
                         if (InsertHelper.enoughArguments(num)) {
                             if (InsertHelper.isUnique(num)) {
@@ -135,7 +134,13 @@ public class Client extends Application{
                                 errorWindow.start(stage);
                                 gameStage.hide();
                             }
+                        }else{
+                            errorWindow.start(stage);
+                            gameStage.hide();
                         }
+                    }else{
+                        errorWindow.start(stage);
+                        gameStage.hide();
                     }
                     System.out.println("Test: " + userList);
 

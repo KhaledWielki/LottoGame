@@ -96,7 +96,6 @@ public class ResultWindow extends Application {
                 LoseWindow loseWindow = new LoseWindow();
                 System.out.println(Client.userList);
                 System.out.println(WelcomeWindow.resultList);
-                System.out.println(LottoController.lottoCompare(Client.userList, WelcomeWindow.resultList));
                 try {
                     if(LottoController.lottoCompare(Client.userList, WelcomeWindow.resultList)){
                         winWindow.start(stage);

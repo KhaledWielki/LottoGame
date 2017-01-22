@@ -55,6 +55,22 @@ public class LoseWindow extends Application{
         loseStage.setScene(scene);
         loseStage.show();
 
+        okButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                Client client = new Client();
+                try {
+                    WelcomeWindow.resultList = WelcomeWindow.connectToServer();
+                    client.start(stage);
+                    loseStage.close();
+                } catch (Exception ex) {
+                    Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
