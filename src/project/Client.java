@@ -160,7 +160,7 @@ public class Client extends Application{
         });
     }
 
-    private static List<Integer> connectToServer() throws IOException {
+    /*private static List<Integer> connectToServer() throws IOException {
         Socket socket = new Socket("127.0.0.1", 9898);
         while (true)
         {
@@ -186,5 +186,5 @@ public class Client extends Application{
             }
         }
 
-    }
+    }*/
 }

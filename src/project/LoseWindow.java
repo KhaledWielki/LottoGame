@@ -23,8 +23,8 @@ public class LoseWindow extends Application{
     private Button exitButton;
 
     @Override
-    public void start(Stage gameStage) {
-        gameStage.setTitle("KENYO");
+    public void start(Stage loseStage) {
+        loseStage.setTitle("KENYO");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -52,14 +52,14 @@ public class LoseWindow extends Application{
         grid.add(hbExitButton, 0, 4);
 
         Scene scene = new Scene(grid, 300, 250);
-        gameStage.setScene(scene);
-        gameStage.show();
+        loseStage.setScene(scene);
+        loseStage.show();
 
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    gameStage.close();
+                    loseStage.close();
                     System.exit(0);
                 } catch (Exception ex) {
                     Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);

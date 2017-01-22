@@ -13,6 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +27,7 @@ import java.util.logging.Logger;
  * Created by Piotrek on 22.01.2017.
  */
 public class ResultWindow extends Application {
+
     private Button playButton;
     private Button exitButton;
 
@@ -80,6 +88,30 @@ public class ResultWindow extends Application {
         gameStage.setScene(scene);
         gameStage.show();
 
+        playButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                WinWindow winWindow = new WinWindow();
+                LoseWindow loseWindow = new LoseWindow();
+                System.out.println(Client.userList);
+                System.out.println(WelcomeWindow.resultList);
+                System.out.println(LottoController.lottoCompare(Client.userList, WelcomeWindow.resultList));
+                try {
+                    if(LottoController.lottoCompare(Client.userList, WelcomeWindow.resultList)){
+                        winWindow.start(stage);
+                        gameStage.hide();
+                    }else{
+                        loseWindow.start(stage);
+                        gameStage.hide();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -93,4 +125,6 @@ public class ResultWindow extends Application {
 
         });
     }
+
+
 }

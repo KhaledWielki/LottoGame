@@ -13,6 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +30,8 @@ public class WelcomeWindow extends Application{
     private Button loginButton;
     private Button exitButton;
     static String user;
+    static List<Integer> resultList = new ArrayList<>();
+    static List<String> helpList2 = new ArrayList<>();
 
     @Override
     public void start(Stage welcomeStage) {
@@ -62,7 +71,11 @@ public class WelcomeWindow extends Application{
                     user = userName.getText();
                     client.start(stage);
                     welcomeStage.hide();
-                } catch (Exception ex) {
+
+                    connectToServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }catch (Exception ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -84,5 +97,34 @@ public class WelcomeWindow extends Application{
     }
     public static void main(String[] args) {
         launch(args);
+
+
+    }
+
+    private static List<Integer> connectToServer() throws IOException{
+        Socket socket = new Socket("127.0.0.1", 9898);
+        while (true)
+        {
+            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+            pw.println("Client name: ROMAN");
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String answer = input.readLine();
+            String answer2 = input.readLine();
+
+            System.out.println(answer);
+            helpList2 = LottoController.convertToList(answer2);
+            resultList = LottoController.getIntegerArray(answer2);
+            System.out.println(resultList);
+
+
+            try{
+                Thread.sleep(2000);
+                return resultList;
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

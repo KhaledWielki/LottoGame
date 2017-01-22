@@ -39,7 +39,7 @@ public class LottoController {
 
     public static boolean lottoCompare(List<Integer> listUser, List<Integer> listServer){
 
-        if (listUser.equals(listServer)){
+        if (listUser.containsAll(listServer)){
             return true;
         }
 
@@ -48,8 +48,9 @@ public class LottoController {
                 || listUser.size() != listServer.size())){
             return false;
         }
-
-        return false;
+        else{
+            return false;
+        }
     }
 
     public static List<String> convertToList(String result){

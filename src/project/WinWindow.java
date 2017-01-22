@@ -41,7 +41,7 @@ public class WinWindow extends Application{
         Text sceneTitle = new Text("KENYO");
         grid.add(sceneTitle, 0, 0);
 
-        Text userName = new Text("PRZEGRAŁEŚ");
+        Text userName = new Text("WYGRAŁEŚ");
         grid.add(userName, 0, 1);
 
         exitButton = new Button();
