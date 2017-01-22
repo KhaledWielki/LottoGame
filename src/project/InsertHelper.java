@@ -18,16 +18,19 @@ public class InsertHelper {
             return true;
         }
         else{
-            return false
+            return false;
         }
-        return false;
+    }
+
+    public static Integer[] listToTable(List<Integer> tmp){
+        Integer[] num = new Integer[tmp.size()];
+        num = tmp.toArray(num);
+        return num;
     }
 
     public static boolean isInteger(List<String> str) {
-        System.out.print("1 " + str + "\n");
         for(int i = 0; i < str.size(); i++){
             if (isInt(str.get(i))){
-                System.out.print("2 " + str.get(i) + "\n");
                 return true;
             }
             else{

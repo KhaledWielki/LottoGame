@@ -1,6 +1,8 @@
 package project;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +17,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -22,9 +26,17 @@ import java.util.List;
  */
 public class Client extends Application{
 
+    static List<String> helpUserList = new ArrayList<>();
     static List<Integer> userList = new ArrayList<>();
     static List<Integer> resultList = new ArrayList<>();
     static List<String> helpList = new ArrayList<>();
+    static String NUM1;
+    static String NUM2;
+    static String NUM3;
+    static String NUM4;
+    static String NUM5;
+    static String NUM6;
+    static String NUMBERS;
 
     private Button playButton;
     private Button exitButton;
@@ -76,7 +88,7 @@ public class Client extends Application{
         grid.add(number6, 6, 2);
 
         exitButton = new Button();
-        exitButton.setText("Wyjscie");
+        exitButton.setText("WYJŚCIE");
         HBox hbExitButton = new HBox(10);
         hbExitButton.setAlignment(Pos.BOTTOM_RIGHT);
         hbExitButton.getChildren().add(exitButton);
@@ -85,14 +97,75 @@ public class Client extends Application{
         Scene scene = new Scene(grid, 500, 250);
         gameStage.setScene(scene);
         gameStage.show();
+
+        playButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                ResultWindow resultWindow = new ResultWindow();
+                ErrorWindow errorWindow = new ErrorWindow();
+                try {
+                    NUM1 = number1.getText();
+                    NUM2 = number2.getText();
+                    NUM3 = number3.getText();
+                    NUM4 = number4.getText();
+                    NUM5 = number5.getText();
+                    NUM6 = number6.getText();
+                    NUMBERS = NUM1 + ", " + NUM2 + ", " + NUM3 + ", " + NUM4 + ", " + NUM5 + ", " + NUM6;
+                    helpUserList.add(NUM1);
+                    helpUserList.add(NUM2);
+                    helpUserList.add(NUM3);
+                    helpUserList.add(NUM4);
+                    helpUserList.add(NUM5);
+                    helpUserList.add(NUM6);
+                    System.out.println(helpUserList);
+                    System.out.println(InsertHelper.isInteger(helpUserList));
+                    if(InsertHelper.isInteger(helpUserList)) {
+                        userList = LottoController.getIntegerArray(NUMBERS);
+                        System.out.println(userList);
+
+                        Integer[] num = InsertHelper.listToTable(userList);
+                        if (InsertHelper.enoughArguments(num)) {
+                            if (InsertHelper.isUnique(num)) {
+
+                                resultWindow.start(stage);
+                                gameStage.hide();
+                            }
+                            else{
+                                errorWindow.start(stage);
+                                gameStage.hide();
+                            }
+                        }
+                    }
+                    System.out.println("Test: " + userList);
+
+                } catch (Exception ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    gameStage.close();
+                    System.exit(0);
+                } catch (Exception ex) {
+                    Logger.getLogger(WelcomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
     }
 
-    private static void connectToServer() throws IOException {
+    private static List<Integer> connectToServer() throws IOException {
         Socket socket = new Socket("127.0.0.1", 9898);
         while (true)
         {
             PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-            pw.println("Client name: ROMAN");
+            //pw.println("Client name: ROMAN");
 
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String answer = input.readLine();
@@ -106,10 +179,12 @@ public class Client extends Application{
 
             try{
                 Thread.sleep(2000);
+                return resultList;
             }
             catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
+
     }
 }
