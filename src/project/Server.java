@@ -1,12 +1,19 @@
 package project;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import project.LottoController;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static project.LottoController.lottoRandomize;
 
@@ -15,18 +22,24 @@ import static project.LottoController.lottoRandomize;
  */
 public class Server {
     static ArrayList<Integer> resultList = new ArrayList<>();
+    private static int portFromConfig;
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Uruchomiono serwer.");
-        int connectionNumber = 0;
-        ServerSocket listener = new ServerSocket(9898);
-        try {
-            while (true) {
-                connection c = new connection(listener.accept(), connectionNumber++);
-                c.start();
+        if(!readConfigFile("config.xml")) {
+            System.err.println("Error during parse config file! Server stopped.");
+            System.exit(1);
+        }else {
+            System.out.println("Uruchomiono serwer.");
+            int connectionNumber = 0;
+            ServerSocket listener = new ServerSocket(portFromConfig);
+            try {
+                while (true) {
+                    connection c = new connection(listener.accept(), connectionNumber++);
+                    c.start();
+                }
+            } finally {
+                listener.close();
             }
-        } finally {
-            listener.close();
         }
     }
 
@@ -69,6 +82,30 @@ public class Server {
         private void log(String a) {
 
             System.out.println(a);
+        }
+    }
+
+    private static boolean readConfigFile(String fileName) {
+        try {
+            File fXmlFile = new File(fileName);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList nList = doc.getElementsByTagName("config");
+
+            Node nNode = nList.item(0);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+
+                portFromConfig= Integer.parseInt(eElement.getElementsByTagName("port").item(0).getTextContent());
+            }
+            return true;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return false;
         }
     }
 }
