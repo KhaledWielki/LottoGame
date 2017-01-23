@@ -126,9 +126,13 @@ public class Client extends Application{
                         Integer[] num = InsertHelper.listToTable(userList);
                         if (InsertHelper.enoughArguments(num)) {
                             if (InsertHelper.isUnique(num)) {
-
-                                resultWindow.start(stage);
-                                gameStage.hide();
+                                if(InsertHelper.isFromRange(userList)) {
+                                    resultWindow.start(stage);
+                                    gameStage.hide();
+                                }else{
+                                    errorWindow.start(stage);
+                                    gameStage.hide();
+                                }
                             }
                             else{
                                 errorWindow.start(stage);

@@ -28,6 +28,18 @@ public class InsertHelper {
         return num;
     }
 
+    public static boolean isFromRange(List<Integer> tmp){
+        for(int i = 0; i < tmp.size(); i++){
+            if ( tmp.get(i) < 50 && tmp.get(i) > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static boolean isInteger(List<String> str) {
         for(int i = 0; i < str.size(); i++){
             if (isInt(str.get(i))){
